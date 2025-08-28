@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+
+		<PackageId>RegexWrap</PackageId>
+		<Version>1.0.0-preview</Version>
+		<Authors>Antony Costa</Authors>
+		<Company>Antony Costa</Company>
+		<Description>Uma API fluente para construir expressões regulares de forma legível e encadeada.</Description>
+		<PackageTags>regex fluent builder nuget</PackageTags>
+		<RepositoryUrl>https://github.com/Antony19992/RegexWrap</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/Antony19992/RegexWrap</PackageProjectUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageIcon>icon.png</PackageIcon> 
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\README.md" Pack="true" PackagePath="" />
+		<None Include="icon.png" Pack="true" PackagePath="" />
+	</ItemGroup>
+
+</Project>
