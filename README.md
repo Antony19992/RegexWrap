@@ -1,6 +1,6 @@
 # RegexWrap
 
-![RegexWrap Icon](icon.png)
+![RegexWrap Icon](RegexWrap/icon.png)
 
 > Uma API fluente para construir expressões regulares de forma legível e encadeada.
 
