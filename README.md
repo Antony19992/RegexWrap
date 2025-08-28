@@ -21,7 +21,7 @@ dotnet add package RegexWrap --version 1.0.0-preview
 ```CSharp
 using RegexWrap;
 
-var regex = RegexWrap.StartPattern()
+var regex = RegexBuilder.StartPattern()
     .StartOfLine()
     .JustLetters().OneOrMore()
     .WhiteSpace()
@@ -74,7 +74,7 @@ bool isMatch = regex.IsMatch("Nome 1234"); // true
 #### Validar um e-mail simples
 
 ```csharp
-var emailRegex = RegexWrap.StartPattern()
+var emailRegex = RegexBuilder.StartPattern()
     .StartOfLine()
     .Group(r => r.JustLetters().OneOrMore())
     .Lit("@")
@@ -90,7 +90,7 @@ bool isValid = emailRegex.IsMatch("teste@email.com"); // true
 #### Número de telefone (formato: `(XX) XXXX-XXXX`)
 
 ```csharp
-var phoneRegex = RegexWrap.StartPattern()
+var phoneRegex = RegexBuilder.StartPattern()
     .Lit("(").JustNumbers().Repeat(2).Lit(")")
     .WhiteSpace()
     .JustNumbers().Repeat(4)
@@ -99,3 +99,4 @@ var phoneRegex = RegexWrap.StartPattern()
     .ReturnAsRegex();
 
 bool isValid = phoneRegex.IsMatch("(41) 9999-1234"); // true
+```
