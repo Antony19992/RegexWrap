@@ -3,103 +3,103 @@ using System.Text.RegularExpressions;
 
 namespace RegexWrap
 {
-    public class RegexWrap
+    public class RegexBuilder
     {
         private readonly StringBuilder _pattern = new();
 
-        private RegexWrap() { }
+        private RegexBuilder() { }
 
-        public static RegexWrap StartPattern() => new();
+        public static RegexBuilder StartPattern() => new();
 
-        public RegexWrap JustNumbers()
+        public RegexBuilder JustNumbers()
         {
             _pattern.Append(@"\d");
             return this;
         }
 
-        public RegexWrap JustLetters()
+        public RegexBuilder JustLetters()
         {
             _pattern.Append(@"[a-zA-Z]");
             return this;
         }
 
-        public RegexWrap WhiteSpace()
+        public RegexBuilder WhiteSpace()
         {
             _pattern.Append(@"\s");
             return this;
         }
 
-        public RegexWrap AnyChar()
+        public RegexBuilder AnyChar()
         {
             _pattern.Append(".");
             return this;
         }
 
-        public RegexWrap Lit(string literal)
+        public RegexBuilder Lit(string literal)
         {
             _pattern.Append(Regex.Escape(literal));
             return this;
         }
 
-        public RegexWrap Repeat(int n)
+        public RegexBuilder Repeat(int n)
         {
             _pattern.Append($"{{{n}}}");
             return this;
         }
 
-        public RegexWrap Repeat(int min, int max)
+        public RegexBuilder Repeat(int min, int max)
         {
             _pattern.Append($"{{{min},{max}}}");
             return this;
         }
 
-        public RegexWrap Optional()
+        public RegexBuilder Optional()
         {
             _pattern.Append("?");
             return this;
         }
 
-        public RegexWrap OneOrMore()
+        public RegexBuilder OneOrMore()
         {
             _pattern.Append("+");
             return this;
         }
 
-        public RegexWrap ZeroOrMore()
+        public RegexBuilder ZeroOrMore()
         {
             _pattern.Append("*");
             return this;
         }
 
-        public RegexWrap Group(Action<RegexWrap> inner)
+        public RegexBuilder Group(Action<RegexBuilder> inner)
         {
-            var nested = new RegexWrap();
+            var nested = new RegexBuilder();
             inner(nested);
             _pattern.Append($"({nested.ReturnAsString()})");
             return this;
         }
 
-        public RegexWrap NonCapturingGroup(Action<RegexWrap> inner)
+        public RegexBuilder NonCapturingGroup(Action<RegexBuilder> inner)
         {
-            var nested = new RegexWrap();
+            var nested = new RegexBuilder();
             inner(nested);
             _pattern.Append($"(?:{nested.ReturnAsString()})");
             return this;
         }
 
-        public RegexWrap Or()
+        public RegexBuilder Or()
         {
             _pattern.Append("|");
             return this;
         }
 
-        public RegexWrap StartOfLine()
+        public RegexBuilder StartOfLine()
         {
             _pattern.Append("^");
             return this;
         }
 
-        public RegexWrap EndOfLine()
+        public RegexBuilder EndOfLine()
         {
             _pattern.Append("$");
             return this;
