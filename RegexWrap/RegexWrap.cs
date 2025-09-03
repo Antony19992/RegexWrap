@@ -5,109 +5,128 @@ namespace RegexWrap
 {
     public class RegexBuilder
     {
-        private readonly StringBuilder _pattern = new();
+        private readonly FluentRegexBuilder _fluentBuilder;
 
-        private RegexBuilder() { }
+        private RegexBuilder() 
+        { 
+            _fluentBuilder = FluentRegexBuilder.StartPattern();
+        }
 
         public static RegexBuilder StartPattern() => new();
 
         public RegexBuilder JustNumbers()
         {
-            _pattern.Append(@"\d");
+            _fluentBuilder.JustNumbers();
             return this;
         }
 
         public RegexBuilder JustLetters()
         {
-            _pattern.Append(@"[a-zA-Z]");
+            _fluentBuilder.JustLetters();
             return this;
         }
 
         public RegexBuilder WhiteSpace()
         {
-            _pattern.Append(@"\s");
+            _fluentBuilder.WhiteSpace();
             return this;
         }
 
         public RegexBuilder AnyChar()
         {
-            _pattern.Append(".");
+            _fluentBuilder.AnyChar();
             return this;
         }
 
         public RegexBuilder Lit(string literal)
         {
-            _pattern.Append(Regex.Escape(literal));
+            _fluentBuilder.Lit(literal);
             return this;
         }
 
         public RegexBuilder Repeat(int n)
         {
-            _pattern.Append($"{{{n}}}");
+            _fluentBuilder.Repeat(n);
             return this;
         }
 
         public RegexBuilder Repeat(int min, int max)
         {
-            _pattern.Append($"{{{min},{max}}}");
+            _fluentBuilder.Repeat(min, max);
             return this;
         }
 
         public RegexBuilder Optional()
         {
-            _pattern.Append("?");
+            _fluentBuilder.Optional();
             return this;
         }
 
         public RegexBuilder OneOrMore()
         {
-            _pattern.Append("+");
+            _fluentBuilder.OneOrMore();
             return this;
         }
 
         public RegexBuilder ZeroOrMore()
         {
-            _pattern.Append("*");
+            _fluentBuilder.ZeroOrMore();
             return this;
         }
 
         public RegexBuilder Group(Action<RegexBuilder> inner)
         {
-            var nested = new RegexBuilder();
-            inner(nested);
-            _pattern.Append($"({nested.ReturnAsString()})");
+            _fluentBuilder.Group(builder => 
+            {
+                var legacyBuilder = new RegexBuilder();
+                inner(legacyBuilder);
+                // Convert legacy builder pattern to new builder
+                var pattern = legacyBuilder.ReturnAsString();
+                if (!string.IsNullOrEmpty(pattern))
+                {
+                    builder.Lit(pattern);
+                }
+            });
             return this;
         }
 
         public RegexBuilder NonCapturingGroup(Action<RegexBuilder> inner)
         {
-            var nested = new RegexBuilder();
-            inner(nested);
-            _pattern.Append($"(?:{nested.ReturnAsString()})");
+            _fluentBuilder.NonCapturingGroup(builder => 
+            {
+                var legacyBuilder = new RegexBuilder();
+                inner(legacyBuilder);
+                // Convert legacy builder pattern to new builder
+                var pattern = legacyBuilder.ReturnAsString();
+                if (!string.IsNullOrEmpty(pattern))
+                {
+                    builder.Lit(pattern);
+                }
+            });
             return this;
         }
 
         public RegexBuilder Or()
         {
-            _pattern.Append("|");
+            _fluentBuilder.Or();
             return this;
         }
 
         public RegexBuilder StartOfLine()
         {
-            _pattern.Append("^");
+            _fluentBuilder.StartOfLine();
             return this;
         }
 
         public RegexBuilder EndOfLine()
         {
-            _pattern.Append("$");
+            _fluentBuilder.EndOfLine();
             return this;
         }
 
-        public string ReturnAsString() => _pattern.ToString();
+        public string ReturnAsString() => _fluentBuilder.ReturnAsString();
 
         public Regex ReturnAsRegex(RegexOptions options = RegexOptions.None)
-            => new Regex(ReturnAsString(), options);
+            => _fluentBuilder.ReturnAsRegex(options);
     }
 }
