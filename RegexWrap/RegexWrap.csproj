@@ -1,27 +1,37 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net9.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
 		<PackageId>RegexWrap</PackageId>
-		<Version>1.0.2</Version>
+		<Version>2.0.0</Version>
 		<Authors>Antony Costa</Authors>
 		<Company>Antony Costa</Company>
-		<Description>Uma API fluente para construir expressões regulares de forma legível e encadeada.</Description>
-		<PackageTags>regex fluent builder nuget</PackageTags>
+		<Description>Uma API fluente para construir expressões regulares de forma legível e encadeada. Versão 2.0 com arquitetura refatorada seguindo princípios SOLID, design patterns e Source Generators otimizada para .NET 9.</Description>
+		<PackageTags>regex fluent builder nuget solid design-patterns source-generators dotnet9</PackageTags>
 		<RepositoryUrl>https://github.com/Antony19992/RegexWrap</RepositoryUrl>
 		<PackageProjectUrl>https://github.com/Antony19992/RegexWrap</PackageProjectUrl>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageIcon>icon.png</PackageIcon> 
+		<PackageIcon>icon.png</PackageIcon>
+		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
 	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.5.0" PrivateAssets="all" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<None Include="..\README.md" Pack="true" PackagePath="" />
 		<None Include="icon.png" Pack="true" PackagePath="" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Analyzer Include="Generators\RegexSourceGenerator.cs" />
 	</ItemGroup>
 
 </Project>
